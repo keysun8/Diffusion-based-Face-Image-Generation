@@ -1,7 +1,7 @@
 # Diffusion-based-Face-Image-Generation
 
 ## Table of Content
-  * [Demo](#demo)
+  * [🎬 Demo](#demo)
   * [Overview](#overview)
   * [Motivation](#motivation)
   * [Technical Aspect](#technical-aspect)
