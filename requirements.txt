@@ -1,0 +1,12 @@
+torch>=2.0.0
+torchvision>=0.15.0
+diffusers>=0.27.0
+transformers>=4.38.0
+accelerate>=0.27.0
+numpy>=1.24.0
+Pillow>=9.5.0
+tqdm>=4.65.0
+matplotlib>=3.7.0
+gradio>=4.19.0
+huggingface_hub>=0.20.0
+safetensors>=0.4.0
