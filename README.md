@@ -13,8 +13,12 @@
   * [License](#license)
   * [Credits](#credits)
 
-## Demo
-Link: [https://your-demo-link.com](https://your-demo-link.com)
+## Demo 
+<a href="[https://huggingface.co/spaces/your-username/your-space-name](https://huggingface.co/spaces/keysun89/this_person_does_not_exist_ldm)" target="_blank">
+  <img align="right" src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo-with-title.png" width="150" alt="Try it on Hugging Face">
+</a>
+
+![Demo](https://via.placeholder.com/800x400?text=Insert+Demo+GIF/Image+Here)
 
 <!-- Please add a screenshot or GIF of your project working here -->
 ![Demo/Screenshot](https://via.placeholder.com/800x400?text=Add+Project+Screenshot+Here)
