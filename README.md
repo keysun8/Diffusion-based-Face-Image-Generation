@@ -14,7 +14,7 @@
   * [Credits](#credits)
 
 ## Demo 
-<a href="https://huggingface.co/spaces/keysun89/this_person_does_not_exist_ldm" target="_blank">
+Link : <a href="https://huggingface.co/spaces/keysun89/this_person_does_not_exist_ldm" target="_blank">
   <img align="right" src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo-with-title.png" width="150" alt="Try it on Hugging Face">
 </a>
 
