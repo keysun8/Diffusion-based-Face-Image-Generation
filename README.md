@@ -13,13 +13,21 @@
   * [License](#license)
   * [Credits](#credits)
 
-## Demo 
-[Link](#https://huggingface.co/spaces/keysun89/this_person_does_not_exist_ldm)
+## 🎬 Demo
+
 <a href="https://huggingface.co/spaces/keysun89/this_person_does_not_exist_ldm" target="_blank">
   <img align="right" src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo-with-title.png" width="150" alt="Try it on Hugging Face">
 </a>
 
-![Demo](https://github.com/keysun8/Diffusion-based-Face-Image-Generation/raw/main/LDM_FACE_DEMO.png)
+Try the live demo on Hugging Face Spaces 👉 **[Launch Demo](https://huggingface.co/spaces/keysun89/this_person_does_not_exist_ldm)**
+
+<p align="center">
+  <img src="https://github.com/keysun8/Diffusion-based-Face-Image-Generation/raw/main/LDM_FACE_DEMO.png" alt="LDM Face Generation Demo" width="700">
+</p>
+
+<p align="center">
+  <em>Latent Diffusion Model generating photorealistic, non-existent human faces.</em>
+</p>
 
 ## Overview
 [Provide a brief overview of your project. Example: This is a simple image classification Flask app trained on the top of Keras API. The trained model takes an image as an input and classifies the class of image...]
