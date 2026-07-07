@@ -1,7 +1,7 @@
 # Diffusion-based-Face-Image-Generation
 
 ## Table of Content
-  * [🎬 Demo](#demo)
+  * [Demo](#demo)
   * [Overview](#overview)
   * [Motivation](#motivation)
   * [Technical Aspect](#technical-aspect)
@@ -30,19 +30,17 @@ Try the live demo on Hugging Face Spaces 👉 **[Launch Demo](https://huggingfac
 </p>
 
 ## Overview
-[Provide a brief overview of your project. Example: This is a simple image classification Flask app trained on the top of Keras API. The trained model takes an image as an input and classifies the class of image...]
+[A Latent Diffusion Model (LDM) that generates realistic human faces from pure noise — trained on CelebA latents and decoded through a VAE. Every face you see is fully synthetic and does not belong to a real person.]
 
 ## Motivation
-[Explain why you built this project. Example: What could be a perfect way to utilize the weekend? I couldn't find any relevant research paper or dataset associated with it. And that led me to collect the images to train a deep learning model...]
+[GANs made "This Person Does Not Exist" famous, but diffusion models have since become the dominant paradigm for generative image synthesis. This project revisits that idea through a Latent Diffusion Model, exploring how denoising in a compressed latent space (via a pretrained VAE) enables efficient, high-quality face generation. It served as a practical stepping stone toward more advanced generative modeling work, including conditional and cross-modal generation tasks.]
 
 ## Technical Aspect
-[Break down the technical implementation details of your project. Example:]
-This project is divided into two parts:
-1. Training a deep learning model using Keras. *(Not covered in this repo)*
-2. Building and hosting a Flask web app. 
-- A user can choose an image from a device or capture it using a pre-built camera.
-- Used Amazon S3 Bucket to store the uploaded images.
-- Used CSRF Token to protect against CSRF attacks.
+Framework: Built entirely in PyTorch, with custom training loops (no high-level trainer abstractions) for full control over the diffusion process.
+Architecture: A UNet-based backbone with residual blocks and attention layers, conditioned on the diffusion timestep via sinusoidal embeddings.
+Latent Space: Images are encoded/decoded using a pretrained VAE (Stable Diffusion's sd-vae-ft-mse), reducing spatial dimensions before diffusion — significantly cutting compute vs. pixel-space models.
+Training: Trained on CelebA face latents with a standard DDPM noise schedule (forward diffusion + noise prediction objective, MSE loss).
+Sampling: Supports iterative denoising (ancestral sampling) to generate final latents, which are then decoded back to RGB images via the VAE decoder.
 
 ## Installation
 The Code is written in Python 3.7. If you don't have Python installed you can find it [here](https://www.python.org/downloads/). If you are using a lower version of Python you can upgrade using the pip package, ensuring you have the latest version of pip. To install the required packages and libraries, run this command in the project directory after cloning the repository:
