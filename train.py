@@ -23,6 +23,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--data_root_pt", type=str, required=True, help="Directory of pre-encoded VAE latents (.pt files)")
 parser.add_argument("--data_root_jpg", type=str, required=True, help="Directory of real RGB images, used for FID reference stats")
 parser.add_argument("--ckpt_dir", type=str, default="checkpoints", help="Where to save model checkpoints")
+parser.add_argument("--resume_ckpt", type=str, default=None, help="Path to a checkpoint (.pt) to resume training from. Leave unset to train from scratch")
 parser.add_argument("--sample_dir", type=str, default="samples", help="Where to save sample image grids during training")
 parser.add_argument("--epochs", type=int, default=100)
 parser.add_argument("--batch_size", type=int, default=32)
@@ -42,7 +43,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 use_amp = device.type == "cuda"  # autocast only makes sense on GPU
 
-# Hyperparams 
+#  Hyperparams 
 T = 1000
 IMG_SIZE = 32          # latent spatial dim: 256px / 8 (VAE) = 32
 CHANNELS = 4           # SD VAE latent channels
@@ -69,7 +70,7 @@ betas_tilde = betas.clone()
 betas_tilde[1:] = betas[1:] * (1.0 - alpha_bars[:-1]) / (1.0 - alpha_bars[1:])
 
 
-# Forward diffusion
+#  Forward diffusion 
 def q_sample(x0, t):
     noise = torch.randn_like(x0)
     xt = (sqrt_ab[t, None, None, None] * x0
@@ -168,7 +169,7 @@ class TimeEmbedding(nn.Module):
         return self.mlp(emb)  # (B, time_dim)
 
 
-#  UNet Blocks
+# ── UNet Blocks ───────────────────────────────────────────────────────────────
 class ResidualBlock(nn.Module):
     def __init__(self, in_ch, out_ch, time_dim=TIME_EMB_DIM):
         super().__init__()
@@ -246,7 +247,7 @@ class Upsample(nn.Module):
         return self.conv(F.interpolate(x, scale_factor=2.0, mode="nearest"))
 
 
-#  UNet (latent space: 32x32 -> 16x16 -> 8x8 -> 4x4) 
+# UNet (latent space: 32x32 -> 16x16 -> 8x8 -> 4x4) 
 class UNet(nn.Module):
     def __init__(self, in_ch=CHANNELS, base_ch=128):
         super().__init__()
@@ -372,7 +373,7 @@ class Diffusion(nn.Module):
         return self.unet(x, temb)      # (B, 4, 32, 32)
 
 
-#  Decode & Sample 
+# Decode & Sample 
 @torch.no_grad()
 def decode_latents(latents):
     """Unscale -> VAE decode -> [0,1] RGB (256x256)."""
@@ -458,8 +459,23 @@ def train():
     fid_scores = []
     fid_steps = []
     epoch_losses = []
+    start_epoch = 1
 
-    for epoch in range(1, args.epochs + 1):
+    #  Resume from checkpoint if provided 
+    if args.resume_ckpt is not None:
+        print(f"Resuming from checkpoint: {args.resume_ckpt}")
+        ckpt = torch.load(args.resume_ckpt, map_location=device, weights_only=True)
+        model.load_state_dict(ckpt["model"])
+        optimizer.load_state_dict(ckpt["optimizer"])
+        scheduler.load_state_dict(ckpt["scheduler"])
+        scaler.load_state_dict(ckpt["scaler"])
+        global_step = ckpt.get("global_step", 0)
+        fid_scores = ckpt.get("fid_scores", [])
+        fid_steps = ckpt.get("fid_steps", [])
+        start_epoch = ckpt.get("epoch", 0) + 1
+        print(f"Resumed at epoch {start_epoch}, global_step {global_step}")
+
+    for epoch in range(start_epoch, args.epochs + 1):
         model.train()
         batch_losses = []
         pbar = tqdm(loader, desc=f"Epoch {epoch}/{args.epochs}")
@@ -486,7 +502,7 @@ def train():
             global_step += 1
             pbar.set_postfix(loss=f"{loss_val:.4f}", step=global_step)
 
-            #  Logging 
+            # Logging 
             if global_step % args.log_loss_every == 0:
                 plt.figure(figsize=(9, 4))
                 plt.plot(iter_losses, linewidth=0.8)
