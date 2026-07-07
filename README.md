@@ -7,6 +7,7 @@
   * [Technical Aspect](#technical-aspect)
   * [Installation](#installation)
   * [Inference](#inference)
+  * [Pretrained Weights](#pretrained-weights)
   * [Training](#training)
   * [Latent Encoding (VAE)](#latent-encoding-vae)
   * [Technologies Used](#technologies-used)
@@ -62,7 +63,7 @@ A CUDA-enabled GPU is strongly recommended for both training and inference, thou
 
 ## Inference
 
-Generate a single face image from a trained checkpoint:
+Download a trained checkpoint from the [pretrained weights repo](https://huggingface.co/keysun89/face_ldm_ckpt/tree/main) on Hugging Face, then generate a single face image:
 
 ```bash
 python inference.py --ckpt checkpoints/ckpt_epoch_0095.pt --output_dir inference_outputs
@@ -74,6 +75,17 @@ python inference.py --ckpt checkpoints/ckpt_epoch_0095.pt --output_dir inference
 | `--output_dir` | Directory to save the generated image | `inference_outputs` |
 
 The generated image is saved as a PNG inside `--output_dir`.
+
+## Pretrained Weights
+
+Trained checkpoints are hosted on Hugging Face Hub:
+👉 **[keysun89/face_ldm_ckpt](https://huggingface.co/keysun89/face_ldm_ckpt/tree/main)**
+
+Download a checkpoint and point `--ckpt` (inference) or `--resume_ckpt` (training) to the downloaded file:
+
+```bash
+huggingface-cli download keysun89/face_ldm_ckpt ckpt_epoch_0095.pt --local-dir checkpoints
+```
 
 ## Training
 
